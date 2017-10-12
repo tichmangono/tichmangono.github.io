@@ -8,7 +8,7 @@ tagline: Machine Learning Musings
 This is a personal blog where I share lessons about what I learn about Python, Machine Learning, Public Health, and Data Science
 I also showcase several projects that I have worked on. 
 
-## About ME
+## About me
 
 Aspiring Machine Learning Engineering/Data Scientist.
 
