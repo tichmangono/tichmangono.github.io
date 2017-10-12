@@ -11,7 +11,7 @@ markdown: kramdown
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : Tich Mangono
+title : tichmangono
 tagline: Musings on Machine Learning
 author :
   name : Tich Mangono
@@ -135,4 +135,8 @@ JB :
   # where [HELPER] is the name of the helper you are overriding.
   
 
-theme: jekyll-theme-slate
+#theme: jekyll-theme-slate
+theme: jekyll-theme-cayman
+#theme: jekyll-theme-lanyon
+#theme: jekyll-theme-minimal
+#theme: jekyll-theme-slate
