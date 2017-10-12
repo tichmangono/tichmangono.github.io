@@ -136,7 +136,7 @@ JB :
   
 
 #theme: jekyll-theme-slate
-theme: jekyll-theme-cayman
-#theme: jekyll-theme-lanyon
+#theme: jekyll-theme-cayman
+theme: jekyll-theme-lanyon
 #theme: jekyll-theme-minimal
 #theme: jekyll-theme-slate
