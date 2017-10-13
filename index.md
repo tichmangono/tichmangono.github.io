@@ -10,7 +10,7 @@ personal projects and interests.
 
 ## About me
 
-I am an aspiring Machine Learning Engineer/Data Scientist.I apply analytics to develop 
+I am an aspiring Machine Learning Engineer/Data Scientist. I apply analytics to develop 
 strategies for HIV prevention and advise ministries of health across southern Africa 
 on high-impact public health decisions. Although my career has spanned several fields - 
 economics, investment banking, private equity and lately, public health - my ability 
