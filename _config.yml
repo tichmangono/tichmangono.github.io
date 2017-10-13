@@ -12,7 +12,7 @@ markdown: kramdown
 # so be sure to set them if your theme uses them.
 #
 title : tichmangono
-tagline: Musings on Machine Learning
+tagline:
 author :
   name : Tich Mangono
   email : tichmangono@gmail.com

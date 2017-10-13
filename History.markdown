@@ -2,7 +2,7 @@
 
 ### Major Enhancements
 
-### Minor Enahncements
+### Minor Enhancements
   * Add `drafts` folder support (#167)
   * Add `excerpt` support (#168)
   * Create History.markdown to help project management (#169)

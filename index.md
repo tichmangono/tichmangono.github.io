@@ -1,19 +1,27 @@
 ---
 layout: page
-title: Machine Learning | Data Science | Public Health
-tagline: Machine Learning Musings
+title: Python | Machine Learning | Data Science | Public Health
+tagline:
 ---
 {% include JB/setup %}
 
-This is a personal blog where I share lessons about what I learn about Python, Machine Learning, Public Health, and Data Science
-I also showcase several projects that I have worked on. 
+I use this space to share what I learn about Python and Machine Learning and to showcase 
+personal projects and interests. 
 
 ## About me
 
-Aspiring Machine Learning Engineering/Data Scientist.
+I am an aspiring Machine Learning Engineer/Data Scientist.I apply analytics to develop 
+strategies for HIV prevention and advise ministries of health across southern Africa 
+on high-impact public health decisions. Although my career has spanned several fields - 
+economics, investment banking, private equity and lately, public health - my ability 
+to solve problems is the unifying theme. Whether I am developing an SQL-backed, ASP.NET 
+web application to increase retail promotions’ profitability; developing evidence-based 
+targets for HIV prevention; or using machine learning to predict HIV supply chain 
+stock-outs, I rely on a combination of logic, technology and data to tackle issues that 
+I care about.
 
     
-## Current Posts
+## Articles
 <ul class="posts">
   {% for post in site.posts %}
     <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
