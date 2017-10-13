@@ -1,6 +1,5 @@
 ---
 layout: post
-author: Tich Mangono
 category : Machine Learning
 tagline: "One of my Udacity Machine Learning Engineer Nanodegree project "
 tags : [unsupervised learning, python, dimensionality reduction, principal component analysis, moocs]

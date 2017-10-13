@@ -1,6 +1,5 @@
 ---
 layout: post
-author: Tich Mangono
 category : Machine Learning
 tagline: "My first end-to-end Machine Learning project"
 tags : [public health, machine learning, python]
