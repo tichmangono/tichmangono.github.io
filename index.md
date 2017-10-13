@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Python | Machine Learning | Data Science | Public Health
+title: Python | Data Science | Public Health
 tagline:
 ---
 {% include JB/setup %}
