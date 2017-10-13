@@ -1,3 +1,4 @@
+
 ---
 layout: post
 author: Tich Mangono
@@ -7,10 +8,7 @@ tags : [public health, machine learning, python]
 ---
 {% include JB/setup %}
 
-## Machine Learning Capstone Project
-### **Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.**
-
-**Author:** Tichakunda Mangono
+#### **Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.**
 
 **Key Question:** Can we use procurement transaction data to predict whether a delivery is delayed and estimating the length of the delay
 Main Data Source: From The Website: https://data.pepfar.net/additionalData. Procurement transaction data from the Supply Chain Management System (SCMS), administered by the United States Agency for International Development (USAID), provides information on health commodities, prices, and delivery destinations.
