@@ -1,13 +1,14 @@
 ---
 layout: post
-category : lessons
-tagline: "Supporting tagline"
-tags : [intro, beginner, jekyll, tutorial]
+author: Tich Mangono
+category : Machine Learning
+tagline: "My first end-to-end Machine Learning project"
+tags : [public health, machine learning, python]
 ---
 {% include JB/setup %}
 
-## Capstone Project - Udacity Machine Learning Nanodegree Program, 2017
-###**Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.**
+## Machine Learning Capstone Project
+### **Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.**
 
 **Author:** Tichakunda Mangono
 
