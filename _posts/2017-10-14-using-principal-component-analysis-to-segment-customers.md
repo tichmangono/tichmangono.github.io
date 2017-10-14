@@ -350,7 +350,7 @@ sns.heatmap(data=data.corr(), annot=True)
 
 
 
-![png](output_15_1.png)
+![png]({{ site.url }}/assets/images/output_15_1.png)
 
 
 ### Visualize Feature Distributions
@@ -367,7 +367,7 @@ pd.scatter_matrix(data, alpha = 0.3, figsize = (14,8), diagonal = 'kde');
     
 
 
-![png](output_17_1.png)
+![png]({{ site.url }}/assets/images/output_17_1.png)
 
 
 ### Question 3
@@ -422,7 +422,7 @@ pd.scatter_matrix(log_data, alpha = 0.3, figsize = (14,8), diagonal = 'kde');
     
 
 
-![png](output_22_1.png)
+![png]({{ site.url }}/assets/images/output_22_1.png)
 
 
 ### Observation
@@ -1248,7 +1248,7 @@ s.plot(kind="bar")
 
 
 
-![png](output_30_1.png)
+![png]({{ site.url }}/assets/images/output_30_1.png)
 
 
 ## Feature Transformation
@@ -1277,7 +1277,7 @@ pca_results = vs.pca_results(good_data, pca)
 ```
 
 
-![png](output_33_0.png)
+![png]({{ site.url }}/assets/images/output_33_0.png)
 
 
 ### Question 5
@@ -1477,7 +1477,7 @@ vs.biplot(good_data, reduced_data, pca)
 
 
 
-![png](output_44_1.png)
+![png]({{ site.url }}/assets/images/output_44_1.png)
 
 
 ### Observation
@@ -1600,7 +1600,7 @@ nClusterScores(KMeans, reduced_data, pca_samples)
     
 
 
-![png](output_53_1.png)
+![png]({{ site.url }}/assets/images/output_53_1.png)
 
 
 **Answer:**
@@ -1623,7 +1623,7 @@ vs.cluster_results(reduced_data, preds, centers, pca_samples)
 ```
 
 
-![png](output_56_0.png)
+![png]({{ site.url }}/assets/images/output_56_0.png)
 
 
 ### Implementation: Data Recovery
@@ -1714,7 +1714,7 @@ true_centers.plot(kind="bar", title="Average Customer Profile by Segment/Cluster
 
 
 
-![png](output_59_1.png)
+![png]({{ site.url }}/assets/images/output_59_1.png)
 
 
 ### Question 8
@@ -1743,7 +1743,7 @@ true_centers.append(median).transpose().plot(kind="bar", title = "Average Segeme
 
 
 
-![png](output_61_2.png)
+![png]({{ site.url }}/assets/images/output_61_2.png)
 
 
 **Answer:**
@@ -1953,7 +1953,7 @@ vs.channel_results(reduced_data, outliers, pca_samples)
 ```
 
 
-![png](output_78_0.png)
+![png]({{ site.url }}/assets/images/output_78_0.png)
 
 
 ### Question 12
