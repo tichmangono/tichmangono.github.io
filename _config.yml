@@ -117,8 +117,6 @@ JB :
 
   # Search Engine optmiization tricks for github pages
   # See instructions on this website: https://help.github.com/articles/search-engine-optimization-for-github-pages/
-  plugins:
-  - jekyll-seo-tag
   
   
   # Settings for sharing helper.
