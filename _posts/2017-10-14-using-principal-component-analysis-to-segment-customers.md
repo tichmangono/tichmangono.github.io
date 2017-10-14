@@ -266,7 +266,7 @@ samples2.iloc[[2,3],:].transpose().plot(kind="bar", ax=ax3, title="Customer 2 vs
 
 
 
-![png](output_9_1.png)
+![png]({{ site.url }}/assets/images/output_9_1.png)
 
 
 **Answer:**
