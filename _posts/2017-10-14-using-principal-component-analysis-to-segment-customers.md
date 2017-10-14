@@ -4,12 +4,7 @@ category : Machine Learning
 tagline: "a project I completed as part of the Udacity machine learning engineer program"
 tags : [principal component analysis, dimensionality reduction, machine learning, python]
 ---
-
 {% include JB/setup %}
-
-# Machine Learning Engineer Nanodegree
-## Unsupervised Learning
-## Project: Creating Customer Segments
 
 Welcome to the third project of the Machine Learning Engineer Nanodegree! In this notebook, some template code has already been provided for you, and it will be your job to implement the additional functionality necessary to successfully complete this project. Sections that begin with **'Implementation'** in the header indicate that the following block of code will require additional functionality which you must provide. Instructions will be provided for each section and the specifics of the implementation are marked in the code block with a `'TODO'` statement. Please be sure to read the instructions carefully!
 
@@ -271,7 +266,7 @@ samples2.iloc[[2,3],:].transpose().plot(kind="bar", ax=ax3, title="Customer 2 vs
 
 
 
-![png](output_9_1.png?raw=true)
+![png](output_9_1.png)
 
 
 **Answer:**
