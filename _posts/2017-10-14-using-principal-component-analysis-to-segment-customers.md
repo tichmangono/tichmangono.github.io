@@ -1,3 +1,12 @@
+---
+layout: post
+category : Machine Learning
+tagline: "a project I completed as part of the Udacity machine learning engineer program"
+tags : [principal component analysis, dimensionality reduction, machine learning, python]
+---
+
+{% include JB/setup %}
+
 # Machine Learning Engineer Nanodegree
 ## Unsupervised Learning
 ## Project: Creating Customer Segments
@@ -262,7 +271,7 @@ samples2.iloc[[2,3],:].transpose().plot(kind="bar", ax=ax3, title="Customer 2 vs
 
 
 
-![png](output_9_1.png)
+![png](output_9_1.png?raw=true)
 
 
 **Answer:**
