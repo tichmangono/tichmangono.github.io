@@ -115,6 +115,12 @@ JB :
         baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
         idsite : '1'                   # the id of the site on Piwik
 
+  # Search Engine optmiization tricks for github pages
+  # See instructions on this website: https://help.github.com/articles/search-engine-optimization-for-github-pages/
+  plugins:
+  - jekyll-seo-tag
+  
+  
   # Settings for sharing helper.
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.
   # Set 'provider' to the sharing provider you want to use.

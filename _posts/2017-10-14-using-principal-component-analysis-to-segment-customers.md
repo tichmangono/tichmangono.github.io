@@ -1477,7 +1477,7 @@ vs.biplot(good_data, reduced_data, pca)
 
 
 
-![png](output_44_1.png)
+![png](/assets/images/output_44_1.png)
 
 
 ### Observation
