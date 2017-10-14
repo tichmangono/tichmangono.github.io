@@ -6,7 +6,7 @@ tagline:
 {% include JB/setup %}
 
 I use this space to share what I learn about Python and Machine Learning and to showcase personal 
-projects and interests. 
+projects and interests.  
 
 ## About me
 
