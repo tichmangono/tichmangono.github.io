@@ -18,7 +18,7 @@ and sometimes R to solve analytic problems in my work and personal life. So far,
 honed my ability to use analytics to solve a diverse range of problems. Whether I am developing an 
 SQL-backed, ASP.NET web application to increase retail promotions’ profitability; developing evidence-based 
 targets for HIV prevention; or using machine learning to predict HIV supply chain stock-outs, I rely on 
-a combination of logic, technology and  data to tackle issues that I care about. I use a combination of 
+a combination of logic, technology and data to tackle issues that I care about. I use a combination of 
 online courses and books to stay informed. Join me as I share my discoveries on this blog!
 
     
