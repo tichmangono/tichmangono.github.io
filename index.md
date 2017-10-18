@@ -22,8 +22,8 @@ developing evidence-based targets for HIV prevention; or using machine learning 
 stock-outs, I rely on a combination of logic, technology and data to tackle issues that I care about. I use 
 online courses and books to stay informed. Join me as I share my discoveries on this blog! 
 
-    
-## Articles
+
+## Recent
 
 {% assign posts_collate = site.posts %}
 {% include JB/posts_collate %}

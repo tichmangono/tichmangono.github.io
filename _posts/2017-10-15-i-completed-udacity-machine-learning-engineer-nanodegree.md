@@ -6,6 +6,8 @@ tags : [moocs,reviews,lessons,python,machine-learning]
 ---
 {% include JB/setup %}
 
+
+
 Two weeks ago, I completed and submitted <a href="https://github.com/tichmangono/capstone_project">my capstone project</a>  for 
 the <a href="https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009"> Udacity Machine Learning Engineer Nanodegree Program</a>, so I would like to share my experience with others considering the 
 program. The whole program took me 5 months to complete which is a decent run considering that I have full time job with travel. 
