@@ -34,9 +34,13 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            {% assign pages_list = site.pages %}
-            {% assign group = 'navigation' %}
-            {% include JB/pages_list %}
+            #{% assign pages_list = site.pages %}
+            #{% assign group = 'navigation' %}
+            #{% include JB/pages_list %}
+            <li><a href="/blog.html">Pages</a></li>        
+            <li><a href="/resume.html">Archive</a></li>
+            <li><a href="/projects.html">About</a></li>
+            <li><a href="/tags.html">Messages</a></li>
           </ul>
         </div>
       </div>
