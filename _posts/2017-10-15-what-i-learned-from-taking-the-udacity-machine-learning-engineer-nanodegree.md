@@ -1,8 +1,8 @@
 ---
 layout: post
-category : MOOCs
-tagline: "my impressions of the program"
-tags : [moocs,reviews,lessons,python,machine-learning]
+category :MOOCs
+tagline:"my impressions of the program"
+tags :[moocs,reviews,lessons,python,machine-learning]
 ---
 {% include JB/setup %}
 

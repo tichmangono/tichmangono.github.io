@@ -1,8 +1,8 @@
 ---
 layout: post
-category : Machine Learning
+category :Machine Learning
 tagline: "my first end-to-end machine learning project"
-tags : [public-health,machine-learning,python]
+tags :[public-health,machine learning,python]
 ---
 {% include JB/setup %}
 
