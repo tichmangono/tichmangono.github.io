@@ -8,6 +8,8 @@ tags : [public health, machine learning, python]
 
 #### *Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.*
 
+This is an overview of my final original capstore project for Udacity Machine Learning Engineer Nanodegree program. It was my first end-to-end machine learning project. You can find the full project report, data, code and notebooks on <a href="https://github.com/tichmangono/capstone_project">this github repo</a>
+
 **Key Question:** Can we use procurement transaction data to predict whether a delivery is delayed and estimating the length of the delay
 Main Data Source: From The Website: https://data.pepfar.net/additionalData. Procurement transaction data from the Supply Chain Management System (SCMS), administered by the United States Agency for International Development (USAID), provides information on health commodities, prices, and delivery destinations.
 
