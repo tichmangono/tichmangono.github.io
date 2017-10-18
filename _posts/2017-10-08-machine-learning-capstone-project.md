@@ -23,7 +23,7 @@ Synopsis: A combined “classification-then-regression” machine learning model
  regression performance. So, while there was no significant improvement in the regression part, the combined classification-then-regression model for Extra Trees does significantly 
  better than the benchmark.
 
- ### Project Overview
+### Project Overview
 
 - **Background:** only 19.5M people out of the ~37M people living with HIV are getting the essential medicines they need. Supply of these essential medicines is critical. Recent evidence https://www.devex.com/news/exclusive-documents-reveal-largest-usaid-health-project-in-trouble-90933 suggests that supply chain for major global programs has worsened after recent changes in supply chain managing organizations. See also chart displayed above.  
 
