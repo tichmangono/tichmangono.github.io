@@ -2,9 +2,11 @@
 layout: post
 category : Machine Learning
 tagline: "my first end-to-end machine learning project"
-tags : [public health, machine learning, python]
+tags : [public-health,machine-learning,python]
 ---
 {% include JB/setup %}
+
+
 
 #### *Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.*
 
@@ -13,7 +15,15 @@ This is an overview of my final original capstore project for Udacity Machine Le
 **Key Question:** Can we use procurement transaction data to predict whether a delivery is delayed and estimating the length of the delay
 Main Data Source: From The Website: https://data.pepfar.net/additionalData. Procurement transaction data from the Supply Chain Management System (SCMS), administered by the United States Agency for International Development (USAID), provides information on health commodities, prices, and delivery destinations.
 
-### Project Overview
+### Synopsis of Findings
+Synopsis: A combined “classification-then-regression” machine learning model can avoid the public health and economic costs associated with delayed deliveries of HIV medicines.
+ An ensemble classification algorithm, Extra Trees, is able to detect 1 in 2 delayed item deliveries. This is a significant improvement from a null hypothesis model which would 
+ detect only 1 in 9 delayed items and a considerable improvement from benchmarked Random Forest classification algorithm which catches 1 in 3 delayed items. Once delayed items are 
+ identified, an Extra Trees regression algorithm can predict the length of delay to within 12 days (RMSE) with an R-Squared of 0.86, which is similar to the benchmarked Random Forest
+ regression performance. So, while there was no significant improvement in the regression part, the combined classification-then-regression model for Extra Trees does significantly 
+ better than the benchmark.
+
+ ### Project Overview
 
 - **Background:** only 19.5M people out of the ~37M people living with HIV are getting the essential medicines they need. Supply of these essential medicines is critical. Recent evidence https://www.devex.com/news/exclusive-documents-reveal-largest-usaid-health-project-in-trouble-90933 suggests that supply chain for major global programs has worsened after recent changes in supply chain managing organizations. See also chart displayed above.  
 
