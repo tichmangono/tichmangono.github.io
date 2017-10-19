@@ -115,9 +115,6 @@ JB :
         baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
         idsite : '1'                   # the id of the site on Piwik
 
-  plugins:
-    jekyll-sitemap
-
   # Search Engine optmiization tricks for github pages
   # See instructions on this website: https://help.github.com/articles/search-engine-optimization-for-github-pages/
   
