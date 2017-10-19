@@ -78,6 +78,13 @@ JB :
   atom_path : /atom.xml
   rss_path : /rss.xml
 
+#pages_list:       
+#  About: '/index'
+#  Blog: '/blog'
+#  Resume: '/resume'
+#  Projects: '/projects'
+#  Archive: '/archive'
+  
   # Settings for comments helper
   # Set 'provider' to the comment provider you want to use.
   # Set 'provider' to false to turn commenting off globally.
