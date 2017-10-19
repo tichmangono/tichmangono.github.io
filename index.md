@@ -23,7 +23,7 @@ stock-outs, I rely on a combination of logic, technology and data to tackle issu
 online courses and books to stay informed. Join me as I share my discoveries on this blog! 
 
 
-## Recent Posts
+## Recent Posts 
 
 <ul class="posts">
   {% for post in site.posts %}
