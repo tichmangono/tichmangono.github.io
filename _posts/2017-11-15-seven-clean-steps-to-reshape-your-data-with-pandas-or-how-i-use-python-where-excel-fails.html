@@ -1,0 +1,1837 @@
+---
+layout: post
+category : MOOCs
+tagline: "Learn about multi-level-indices, pivoting, stacking, list-comprehension, apply, lambda, string manipulation, and more in one example"
+
+tags : [tutorial, python,data analysis,pandas]
+---
+{% include JB/setup %}
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Seven-Clean-Steps-to-Reshape-your-Data-with-Pandas-or-How-I-use-Python-to-augment-Excel-tasks-in-my-day-to-day-work">Seven Clean Steps to Reshape your Data with Pandas or How I use Python to augment Excel tasks in my day-to-day work<a class="anchor-link" href="#Seven-Clean-Steps-to-Reshape-your-Data-with-Pandas-or-How-I-use-Python-to-augment-Excel-tasks-in-my-day-to-day-work">&#182;</a></h2><h3 id="Learn-about-multi-level-indices,-pivoting,-stacking,-list-comprehension,-apply,-lambda,-string-manipulation,-and-more-in-one-example">Learn about multi-level-indices, pivoting, stacking, list-comprehension, apply, lambda, string manipulation, and more in one example<a class="anchor-link" href="#Learn-about-multi-level-indices,-pivoting,-stacking,-list-comprehension,-apply,-lambda,-string-manipulation,-and-more-in-one-example">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When I started learning Python, it was mostly a hobby and I didn't realize how useful it would be for my work. A few weeks ago, my colleague sent me a dataset for a public health intevention, consisting of tabs of  data from different organizations. The task was to develop a flexible dashboard to explore this data effectively but there was one problem: the data was in different tabs and its format did not exactly lend itself easily to analysis! Before, this would have been just another manual task, but I immediately saw the use-case for Python automation and set to work developing the script. Within an hour, I had flexible, 
+reusable piece of code which later saved me literally DAYs of revision and updating analyses had I done this manually!</p>
+<p>I would like to share with you how I did this in case it comes up in you own work. Along the way, I will show some neat tricks and explain why I take certain approaches e.g. multi-level indices, pivoting, stacking, list-comprehension, appply, lambda, string manipulation etc..Please note that I have sanitized the dataset and generated dummy numbers, but the 
+format and concepts to be tackled remain the same. Here's a roadmap of what we will do with Pandas:</p>
+<ol>
+<li>Set up the environment and load the data</li>
+<li>Invetigate the data</li>
+<li>Parse the different data tabs</li>
+<li>Standardize existing columns and create new ones</li>
+<li>Clean up the data using "apply" and "lambda" functions</li>
+<li>Reshape the data from wide to long by pivoting on multi-level indices and stacking</li>
+<li>Concatenate and save the final results back to Excel</li>
+</ol>
+<p>That's it. We will also wrap this up into a neat function that can be reused to automate this task and save time. I have posted the code and data on my github account. Also, check out my blog for more ideas on Machine Learning, Python and Public Health. Let's begin!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1.-Set-up-the-environment-and-load-the-data">1. Set up the environment and load the data<a class="anchor-link" href="#1.-Set-up-the-environment-and-load-the-data">&#182;</a></h3><p>As advertised, we only need one Python library to execute this task: Pandas! Our data is an Excel file with several tabs. I like using the ExceFile object functionality of Pandas as opposed to the read command because it handles multi-tab spreadsheets very well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[197]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the relevant libraries...</span>
+<span class="c1"># By the way, I am ussing Python 3</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Load the raw data using the ExcelFile object</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="s1">&#39;reshaping_data.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="2.-Investigate-the-data">2. Investigate the data<a class="anchor-link" href="#2.-Investigate-the-data">&#182;</a></h3><p>We have four tabs in the file, each representing data from a single organization.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[198]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># First, see the sheetnames available</span>
+<span class="n">data</span><span class="o">.</span><span class="n">sheet_names</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[198]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;ABC_inc&#39;, &#39;HIJ_inc&#39;, &#39;OPQ_inc&#39;, &#39;XYZ_inc&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Parsing the first tab for ABC_inc organization, we can see that the format needs a little work before we can use it as a standard dataframe. The data contains the targets of a public health intervention. We can see that our column header names start in row 6, and we have information about the location (district, province); entities involved (partner, funding source); and target year (2017 to 2020). Notice also how row 7 has additional information on the targeted age group for this intervention for each year in the data. The main body data starts from row 8 onwards.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[199]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Take a peek at the first 10 rows of the first tab</span>
+<span class="n">data</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sheetname</span><span class="o">=</span><span class="s1">&#39;ABC_inc&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[199]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Unnamed: 1</th>
+      <th>Unnamed: 2</th>
+      <th>Unnamed: 3</th>
+      <th>Unnamed: 4</th>
+      <th>Unnamed: 5</th>
+      <th>Unnamed: 6</th>
+      <th>Unnamed: 7</th>
+      <th>Unnamed: 8</th>
+      <th>Unnamed: 9</th>
+      <th>...</th>
+      <th>Unnamed: 21</th>
+      <th>Unnamed: 22</th>
+      <th>Unnamed: 23</th>
+      <th>Unnamed: 24</th>
+      <th>Unnamed: 25</th>
+      <th>Unnamed: 26</th>
+      <th>Unnamed: 27</th>
+      <th>Unnamed: 28</th>
+      <th>Unnamed: 29</th>
+      <th>Unnamed: 30</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Year1</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Year4</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Year5</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>NaN</td>
+      <td>district</td>
+      <td>province</td>
+      <td>partner</td>
+      <td>funding_source</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2017</td>
+      <td>2017</td>
+      <td>2017</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>2020</td>
+      <td>2020</td>
+      <td>2020</td>
+      <td>2020</td>
+      <td>NaN</td>
+      <td>2021</td>
+      <td>2021</td>
+      <td>2021</td>
+      <td>2021</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>NaN</td>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1296</td>
+      <td>383</td>
+      <td>1571</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>1906</td>
+      <td>1925</td>
+      <td>931</td>
+      <td>5465</td>
+      <td>NaN</td>
+      <td>61</td>
+      <td>353</td>
+      <td>1091</td>
+      <td>2409</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>NaN</td>
+      <td>District 2</td>
+      <td>Region 3</td>
+      <td>partner 6</td>
+      <td>Souce 5</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>722</td>
+      <td>232</td>
+      <td>1848</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>810</td>
+      <td>664</td>
+      <td>452</td>
+      <td>3665</td>
+      <td>NaN</td>
+      <td>989</td>
+      <td>374</td>
+      <td>1790</td>
+      <td>4320</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>NaN</td>
+      <td>District 3</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>545</td>
+      <td>585</td>
+      <td>1736</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>1890</td>
+      <td>736</td>
+      <td>1414</td>
+      <td>5311</td>
+      <td>NaN</td>
+      <td>1215</td>
+      <td>112</td>
+      <td>1475</td>
+      <td>2824</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 31 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.-Parse-the-different-data-tabs">3. Parse the different data tabs<a class="anchor-link" href="#3.-Parse-the-different-data-tabs">&#182;</a></h3><p>Make a list of your target tab names. In our case we want all of them. However, if you only wanted say 2 of these for analyses, then you could easily 
+specify a diffferent list</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[200]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tabnames</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_names</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since the tabs have a similar format, we will use only one them for this demonstration. At the end we will combine all the steps into a single, resuable function and use iteration to apply the function to all the target tabs. We will then concatenate and save the results. So, parse the tab into a dataframe, df, skipping the useless emptyrows at the top. I always use "data.head()" check my result and  make sure my code did what I expected.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[201]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># parse</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sheetname</span><span class="o">=</span><span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[201]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>funding_source</th>
+      <th>Unnamed: 5</th>
+      <th>Unnamed: 6</th>
+      <th>2017</th>
+      <th>2017.1</th>
+      <th>2017.2</th>
+      <th>...</th>
+      <th>Unnamed: 21</th>
+      <th>2020</th>
+      <th>2020.1</th>
+      <th>2020.2</th>
+      <th>2020.3</th>
+      <th>Unnamed: 26</th>
+      <th>2021</th>
+      <th>2021.1</th>
+      <th>2021.2</th>
+      <th>2021.3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1296</td>
+      <td>383</td>
+      <td>1571</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>1906</td>
+      <td>1925</td>
+      <td>931</td>
+      <td>5465</td>
+      <td>NaN</td>
+      <td>61</td>
+      <td>353</td>
+      <td>1091</td>
+      <td>2409</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 31 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="4.-Standardize-existing-columns-and-create-new-ones">4. Standardize existing columns and create new ones<a class="anchor-link" href="#4.-Standardize-existing-columns-and-create-new-ones">&#182;</a></h3><p>Make a list of the default columns. We will throw away some but also strip the rest of them for information to be used for 
+new column names. We will need to retain our information on the particular year, age-group and organization.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[202]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># make a list of the header row and strip up to the 4th letter. This is the location and year information</span>
+<span class="n">cols1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">cols1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols1</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[203]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># make another list of the first row,this is the age group information</span>
+<span class="c1"># we need to preseve this information in the column name when we reshape the data </span>
+<span class="n">cols2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+<span class="n">cols2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols2</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[204]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># now join the two lists to make a combined column name which preserves our location, year and age-group information</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cols1</span><span class="p">,</span><span class="n">cols2</span><span class="p">)]</span>
+<span class="c1"># Assign new column names to the dataframe</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[204]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unna_nan</th>
+      <th>dist_nan</th>
+      <th>prov_nan</th>
+      <th>part_nan</th>
+      <th>fund_nan</th>
+      <th>Unna_nan</th>
+      <th>Unna_nan</th>
+      <th>2017_10-14yrs</th>
+      <th>2017_15-29yrs</th>
+      <th>2017_30+yrs</th>
+      <th>...</th>
+      <th>Unna_nan</th>
+      <th>2020_10-14yrs</th>
+      <th>2020_15-29yrs</th>
+      <th>2020_30+yrs</th>
+      <th>2020_Total</th>
+      <th>Unna_nan</th>
+      <th>2021_10-14yrs</th>
+      <th>2021_15-29yrs</th>
+      <th>2021_30+yrs</th>
+      <th>2021_Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+      <td>NaN</td>
+      <td>10-14yrs</td>
+      <td>15-29yrs</td>
+      <td>30+yrs</td>
+      <td>Total</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 31 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[205]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Drop empty columns, Exclude irrelevant ones and Rename the useful columns</span>
+<span class="c1"># Note when you drop, you should specify axis=1 for columns and axis=0 for rows</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Unna_nan&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dist_nan&#39;</span><span class="p">:</span><span class="s1">&#39;district&#39;</span><span class="p">,</span>
+                                                   <span class="s1">&#39;prov_nan&#39;</span><span class="p">:</span> <span class="s1">&#39;province&#39;</span><span class="p">,</span>
+                                                   <span class="s1">&#39;part_nan&#39;</span><span class="p">:</span><span class="s1">&#39;partner&#39;</span><span class="p">,</span>
+                                                   <span class="s1">&#39;fund_nan&#39;</span><span class="p">:</span><span class="s1">&#39;financing_source&#39;</span><span class="p">})</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[205]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>2017_10-14yrs</th>
+      <th>2017_15-29yrs</th>
+      <th>2017_30+yrs</th>
+      <th>2017_Total</th>
+      <th>2018_10-14yrs</th>
+      <th>2018_15-29yrs</th>
+      <th>...</th>
+      <th>2019_30+yrs</th>
+      <th>2019_Total</th>
+      <th>2020_10-14yrs</th>
+      <th>2020_15-29yrs</th>
+      <th>2020_30+yrs</th>
+      <th>2020_Total</th>
+      <th>2021_10-14yrs</th>
+      <th>2021_15-29yrs</th>
+      <th>2021_30+yrs</th>
+      <th>2021_Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>1296</td>
+      <td>383</td>
+      <td>1571</td>
+      <td>3250</td>
+      <td>189</td>
+      <td>854</td>
+      <td>...</td>
+      <td>491</td>
+      <td>2256</td>
+      <td>1906</td>
+      <td>1925</td>
+      <td>931</td>
+      <td>5465</td>
+      <td>61</td>
+      <td>353</td>
+      <td>1091</td>
+      <td>2409</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>District 2</td>
+      <td>Region 3</td>
+      <td>partner 6</td>
+      <td>Souce 5</td>
+      <td>722</td>
+      <td>232</td>
+      <td>1848</td>
+      <td>2802</td>
+      <td>972</td>
+      <td>69</td>
+      <td>...</td>
+      <td>245</td>
+      <td>2957</td>
+      <td>810</td>
+      <td>664</td>
+      <td>452</td>
+      <td>3665</td>
+      <td>989</td>
+      <td>374</td>
+      <td>1790</td>
+      <td>4320</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 24 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[206]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Engineer a new column for the organization, grab this name from the excel tab name</span>
+<span class="c1"># This should read &#39;ABC inc&#39; if executed correctly</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;main_organization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">+</span> <span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">main_organization</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[206]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1    ABC inc
+2    ABC inc
+Name: main_organization, dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's pause and look at the structure of our dataframe so far.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[207]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 10 entries, 1 to 10
+Data columns (total 25 columns):
+district             10 non-null object
+province             10 non-null object
+partner              10 non-null object
+financing_source     10 non-null object
+2017_10-14yrs        10 non-null object
+2017_15-29yrs        10 non-null object
+2017_30+yrs          10 non-null object
+2017_Total           10 non-null object
+2018_10-14yrs        10 non-null object
+2018_15-29yrs        10 non-null object
+2018_30+yrs          10 non-null object
+2018_Total           10 non-null object
+2019_10-14yrs        10 non-null object
+2019_15-29yrs        10 non-null object
+2019_30+yrs          10 non-null object
+2019_Total           10 non-null object
+2020_10-14yrs        10 non-null object
+2020_15-29yrs        10 non-null object
+2020_30+yrs          10 non-null object
+2020_Total           10 non-null object
+2021_10-14yrs        10 non-null object
+2021_15-29yrs        10 non-null object
+2021_30+yrs          10 non-null object
+2021_Total           10 non-null object
+main_organization    10 non-null object
+dtypes: object(25)
+memory usage: 2.0+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We see that we have a 29 columns in all. However, currently, all of them have the "object" data type and we know some of them should have a numeric data type. We also have redundant "Total" columns. Notice that the column names still retain multiple levels of information, i.e. the year and the age-group to which the data in that particular column belongs! This is one of the key aspects of this exercise as we will see in the next step.
+Before that, let's clean up a little bit...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="5.-Clean-up-the-data-using-&quot;apply&quot;-and-&quot;lambda&quot;-functions">5. Clean up the data using "apply" and "lambda" functions<a class="anchor-link" href="#5.-Clean-up-the-data-using-&quot;apply&quot;-and-&quot;lambda&quot;-functions">&#182;</a></h3><p>Let's remove more redudant columns and change the data types.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[208]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make lists of the columns which need attention and use this as reference to execute</span>
+<span class="c1"># You will notice that I use list comprehension every time I generate an iterable like a list or dictionary</span>
+<span class="c1"># This is really amazing python functionality and I never want to go back to the old looping way of doing this!</span>
+<span class="n">to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;Total&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span> <span class="c1"># redudant columns</span>
+<span class="n">to_change</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;yrs&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span> <span class="c1"># columns that should be numbers, not strings</span>
+
+<span class="c1"># drop unwanted columns</span>
+<span class="c1"># Notice that you need to specify inplace, otherwise pandas will return the dataframe instead of changing it in place</span>
+<span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">to_remove</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span> 
+
+<span class="c1"># Change the target column data types</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">to_change</span><span class="p">:</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[209]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 10 entries, 1 to 10
+Data columns (total 20 columns):
+district             10 non-null object
+province             10 non-null object
+partner              10 non-null object
+financing_source     10 non-null object
+2017_10-14yrs        10 non-null int64
+2017_15-29yrs        10 non-null int64
+2017_30+yrs          10 non-null int64
+2018_10-14yrs        10 non-null int64
+2018_15-29yrs        10 non-null int64
+2018_30+yrs          10 non-null int64
+2019_10-14yrs        10 non-null int64
+2019_15-29yrs        10 non-null int64
+2019_30+yrs          10 non-null int64
+2020_10-14yrs        10 non-null int64
+2020_15-29yrs        10 non-null int64
+2020_30+yrs          10 non-null int64
+2021_10-14yrs        10 non-null int64
+2021_15-29yrs        10 non-null int64
+2021_30+yrs          10 non-null int64
+main_organization    10 non-null object
+dtypes: int64(15), object(5)
+memory usage: 1.6+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looks like it worked!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="6.-Reshape-the-data-from-wide-to-long-by-pivoting-on-multi-level-indices-and-stacking">6. Reshape the data from wide to long by pivoting on multi-level indices and stacking<a class="anchor-link" href="#6.-Reshape-the-data-from-wide-to-long-by-pivoting-on-multi-level-indices-and-stacking">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, on to my favorite part - reshaping the data! This functionality gives you so much power when it comes to data.It's one that I use so often for data cleaning and manipulation given the populaarity of spreadsheets and survey-type data in my work. To me reshaping data literally feels like I am moulding the data like putty with my very hands :). So, we will use pivoting on strategic indices and then use stacking to achieve the shape we want. Currenntly the data is in a wide format, but we need to change it to long format so that we can easily transfer it to Excel where long formats lend themselves to quick pivot tables and dashboard creation very easily.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[210]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># First, select the columns to use for a multi-level index. This depends on your data</span>
+<span class="c1"># Generally, you want all the identifier columns to be included in the multi-index </span>
+<span class="c1"># For this dataset, this is every non-numeric column</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;district&#39;</span><span class="p">,</span><span class="s1">&#39;province&#39;</span><span class="p">,</span> <span class="s1">&#39;partner&#39;</span><span class="p">,</span><span class="s1">&#39;financing_source&#39;</span><span class="p">,</span><span class="s1">&#39;main_organization&#39;</span><span class="p">]</span>
+
+<span class="c1"># Then pivot the dataset based on this multi-level index </span>
+<span class="n">multi_indexed_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+<span class="n">multi_indexed_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[210]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>2017_10-14yrs</th>
+      <th>2017_15-29yrs</th>
+      <th>2017_30+yrs</th>
+      <th>2018_10-14yrs</th>
+      <th>2018_15-29yrs</th>
+      <th>2018_30+yrs</th>
+      <th>2019_10-14yrs</th>
+      <th>2019_15-29yrs</th>
+      <th>2019_30+yrs</th>
+      <th>2020_10-14yrs</th>
+      <th>2020_15-29yrs</th>
+      <th>2020_30+yrs</th>
+      <th>2021_10-14yrs</th>
+      <th>2021_15-29yrs</th>
+      <th>2021_30+yrs</th>
+    </tr>
+    <tr>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>main_organization</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>District 1</th>
+      <th>Region 1</th>
+      <th>partner 1</th>
+      <th>Souce 2</th>
+      <th>ABC inc</th>
+      <td>1296</td>
+      <td>383</td>
+      <td>1571</td>
+      <td>189</td>
+      <td>854</td>
+      <td>339</td>
+      <td>840</td>
+      <td>773</td>
+      <td>491</td>
+      <td>1906</td>
+      <td>1925</td>
+      <td>931</td>
+      <td>61</td>
+      <td>353</td>
+      <td>1091</td>
+    </tr>
+    <tr>
+      <th>District 2</th>
+      <th>Region 3</th>
+      <th>partner 6</th>
+      <th>Souce 5</th>
+      <th>ABC inc</th>
+      <td>722</td>
+      <td>232</td>
+      <td>1848</td>
+      <td>972</td>
+      <td>69</td>
+      <td>1205</td>
+      <td>422</td>
+      <td>676</td>
+      <td>245</td>
+      <td>810</td>
+      <td>664</td>
+      <td>452</td>
+      <td>989</td>
+      <td>374</td>
+      <td>1790</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After pivoting the dataframe on our strategically engineered multi-level index, we will now stack all the numerical columns. This will give us the flexibility to reshape the data back to whatever level we want afterwards, just like an Excel pivot table.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[211]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Stack the columns to achieve the baseline long format for the data</span>
+<span class="n">stacked_df</span> <span class="o">=</span> <span class="n">multi_indexed_df</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">stacked_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="c1"># check out the results!</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[211]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>district    province  partner    financing_source  main_organization               
+District 1  Region 1  partner 1  Souce 2           ABC inc            2017_10-14yrs    1296
+                                                                      2017_15-29yrs     383
+                                                                      2017_30+yrs      1571
+                                                                      2018_10-14yrs     189
+                                                                      2018_15-29yrs     854
+                                                                      2018_30+yrs       339
+                                                                      2019_10-14yrs     840
+                                                                      2019_15-29yrs     773
+                                                                      2019_30+yrs       491
+                                                                      2020_10-14yrs    1906
+                                                                      2020_15-29yrs    1925
+                                                                      2020_30+yrs       931
+                                                                      2021_10-14yrs      61
+                                                                      2021_15-29yrs     353
+                                                                      2021_30+yrs      1091
+District 2  Region 3  partner 6  Souce 5           ABC inc            2017_10-14yrs     722
+                                                                      2017_15-29yrs     232
+                                                                      2017_30+yrs      1848
+                                                                      2018_10-14yrs     972
+                                                                      2018_15-29yrs      69
+                                                                      2018_30+yrs      1205
+                                                                      2019_10-14yrs     422
+                                                                      2019_15-29yrs     676
+                                                                      2019_30+yrs       245
+                                                                      2020_10-14yrs     810
+dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Mind. Blown! Exacty how I reacted when I saw this for the first time too.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[212]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now do a reset to disband the multi-level index, we only needed it to pivot our data during the reshape</span>
+<span class="n">long_df</span> <span class="o">=</span> <span class="n">stacked_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">long_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[212]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>main_organization</th>
+      <th>level_5</th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017_10-14yrs</td>
+      <td>1296</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017_15-29yrs</td>
+      <td>383</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017_30+yrs</td>
+      <td>1571</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice that the "level_5" column contains two peices of information. This was deliberately done from the beginning so as not to lose any information along the way as we drop some columns and rows. Now, lets use string manipulation to separate these and delete any redundancies after that.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[213]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make series of lists which split year from target age-group</span>
+<span class="c1"># the .str attribute is how you manipulate the dataframe objects and columns with strings in them</span>
+<span class="n">col_str</span> <span class="o">=</span> <span class="n">long_df</span><span class="o">.</span><span class="n">level_5</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> 
+<span class="n">col_str</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[213]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    [2017, 10-14yrs]
+1    [2017, 15-29yrs]
+2      [2017, 30+yrs]
+Name: level_5, dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[214]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now engineer the columns we want, one columns takes the first item in col_str and another columns takes the second </span>
+<span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">col_str</span><span class="p">]</span> 
+<span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">col_str</span><span class="p">]</span>
+<span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_quantity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">long_df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># rename this column</span>
+<span class="n">long_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[214]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>main_organization</th>
+      <th>level_5</th>
+      <th>0</th>
+      <th>target_year</th>
+      <th>target_age</th>
+      <th>target_quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017_10-14yrs</td>
+      <td>1296</td>
+      <td>2017</td>
+      <td>10-14yrs</td>
+      <td>1296</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017_15-29yrs</td>
+      <td>383</td>
+      <td>2017</td>
+      <td>15-29yrs</td>
+      <td>383</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[215]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now drop the now redundant columns</span>
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">long_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;level_5&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[215]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>main_organization</th>
+      <th>target_year</th>
+      <th>target_age</th>
+      <th>target_quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017</td>
+      <td>10-14yrs</td>
+      <td>1296</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>District 1</td>
+      <td>Region 1</td>
+      <td>partner 1</td>
+      <td>Souce 2</td>
+      <td>ABC inc</td>
+      <td>2017</td>
+      <td>15-29yrs</td>
+      <td>383</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="7.-Concatenate-and-save-the-final-results-back-to-Excel">7. Concatenate and save the final results back to Excel<a class="anchor-link" href="#7.-Concatenate-and-save-the-final-results-back-to-Excel">&#182;</a></h3><p>Now we have all the ingridients we need, we can define a function to autmate the reshape, use iteration to apply this function to any number of tabs we want and then finally save this to our spreadsheet of choice! Notice that in the function I combine the shapes and add an assertion to check that the inputs are correct, but it mostly the same code.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[216]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Now define a function for parsing other funder targets data</span>
+<span class="k">def</span> <span class="nf">ReshapeFunc</span><span class="p">(</span><span class="n">excel_obj</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Takes in an excel file object with multiple tabs in a wide format, and a specified index</span>
+<span class="sd">    of the tab to be parsed and reshaped. Returns a dataframe of the specified tab</span>
+<span class="sd">    reshaped to long format&quot;&quot;&quot;</span>
+    
+    <span class="n">tabnames</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_names</span>
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tabnames</span><span class="p">),</span> <span class="s2">&quot;Your tab index exceeds the number of available tabs, try a lower number&quot;</span> 
+    
+    <span class="c1"># parse and clean columns</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">excel_obj</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sheetname</span><span class="o">=</span><span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+    <span class="n">cols1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+    <span class="n">cols2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])]</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cols1</span><span class="p">,</span><span class="n">cols2</span><span class="p">)]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Unna_nan&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;dist_nan&#39;</span><span class="p">:</span><span class="s1">&#39;district&#39;</span><span class="p">,</span>
+                                                       <span class="s1">&#39;prov_nan&#39;</span><span class="p">:</span> <span class="s1">&#39;province&#39;</span><span class="p">,</span>
+                                                       <span class="s1">&#39;part_nan&#39;</span><span class="p">:</span><span class="s1">&#39;partner&#39;</span><span class="p">,</span>
+                                                       <span class="s1">&#39;fund_nan&#39;</span><span class="p">:</span><span class="s1">&#39;financing_source&#39;</span><span class="p">})</span>
+    <span class="c1"># new columns, drop some and change data type</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;main_organization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">+</span> <span class="n">tabnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;Total&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span> 
+    
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;yrs&quot;</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># reshape - indexing, pivoting and stacking</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;district&#39;</span><span class="p">,</span><span class="s1">&#39;province&#39;</span><span class="p">,</span> <span class="s1">&#39;partner&#39;</span><span class="p">,</span><span class="s1">&#39;financing_source&#39;</span><span class="p">,</span><span class="s1">&#39;main_organization&#39;</span><span class="p">]</span>
+    <span class="n">multi_indexed_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="n">stacked_df</span> <span class="o">=</span> <span class="n">multi_indexed_df</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">stacked_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="c1"># check out the results!</span>
+    <span class="n">long_df</span> <span class="o">=</span> <span class="n">stacked_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    
+    <span class="c1"># clean up and finalize</span>
+    <span class="n">col_str</span> <span class="o">=</span> <span class="n">long_df</span><span class="o">.</span><span class="n">level_5</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> 
+    <span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">col_str</span><span class="p">]</span> 
+    <span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">col_str</span><span class="p">]</span>
+    <span class="n">long_df</span><span class="p">[</span><span class="s1">&#39;target_quantity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">long_df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># rename this column</span>
+    <span class="n">df_final</span> <span class="o">=</span> <span class="n">long_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;level_5&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_final</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[217]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Check that our function works:</span>
+<span class="n">check_df</span> <span class="o">=</span> <span class="n">ReshapeFunc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">check_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[217]:</div>
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>district</th>
+      <th>province</th>
+      <th>partner</th>
+      <th>financing_source</th>
+      <th>main_organization</th>
+      <th>target_year</th>
+      <th>target_age</th>
+      <th>target_quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>District 19</td>
+      <td>Region 4</td>
+      <td>partner 3</td>
+      <td>Souce 4</td>
+      <td>OPQ inc</td>
+      <td>2017</td>
+      <td>10-14yrs</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>District 19</td>
+      <td>Region 4</td>
+      <td>partner 3</td>
+      <td>Souce 4</td>
+      <td>OPQ inc</td>
+      <td>2017</td>
+      <td>15-29yrs</td>
+      <td>974</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Cool! Now use the function to make a dataframe for each tab, put them all in a list, concatenate them into one single dataframe and save it back to Excel.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[218]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfs_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ReshapeFunc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+<span class="n">concat_dfs</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs_list</span><span class="p">)</span>
+<span class="n">concat_dfs</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;reshaping_result_long_format.xlsx&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This long format can now be easily used for pivot tables and making dashboard charts and analysis by pivoting on any combination of the descriptive, non-numeric columns and aggregating the numeric columns. Mission complete. Happy Coding!</p>
+
+</div>
+</div>
+</div>
+ 
+
