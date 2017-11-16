@@ -1,8 +1,7 @@
 ---
 layout: post
 category : MOOCs
-tagline: "Learn about multi-level-indices, pivoting, stacking, list-comprehension, apply, lambda, string manipulation, and more in one example"
-
+tagline: "concepts: multi-level-indexing, pivoting, stacking, apply, lambda, list-comprehension"
 tags : [tutorial, python,data analysis,pandas]
 ---
 {% include JB/setup %}
@@ -12,15 +11,7 @@ tags : [tutorial, python,data analysis,pandas]
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Seven-Clean-Steps-to-Reshape-your-Data-with-Pandas-or-How-I-use-Python-to-augment-Excel-tasks-in-my-day-to-day-work">Seven Clean Steps to Reshape your Data with Pandas or How I use Python to augment Excel tasks in my day-to-day work<a class="anchor-link" href="#Seven-Clean-Steps-to-Reshape-your-Data-with-Pandas-or-How-I-use-Python-to-augment-Excel-tasks-in-my-day-to-day-work">&#182;</a></h2><h3 id="Learn-about-multi-level-indices,-pivoting,-stacking,-list-comprehension,-apply,-lambda,-string-manipulation,-and-more-in-one-example">Learn about multi-level-indices, pivoting, stacking, list-comprehension, apply, lambda, string manipulation, and more in one example<a class="anchor-link" href="#Learn-about-multi-level-indices,-pivoting,-stacking,-list-comprehension,-apply,-lambda,-string-manipulation,-and-more-in-one-example">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
+<img src= "reshaping_illustrated.jpg">
 <p>When I started learning Python, it was mostly a hobby and I didn't realize how useful it would be for my work. A few weeks ago, my colleague sent me a dataset for a public health intevention, consisting of tabs of  data from different organizations. The task was to develop a flexible dashboard to explore this data effectively but there was one problem: the data was in different tabs and its format did not exactly lend itself easily to analysis! Before, this would have been just another manual task, but I immediately saw the use-case for Python automation and set to work developing the script. Within an hour, I had flexible, 
 reusable piece of code which later saved me literally DAYs of revision and updating analyses had I done this manually!</p>
 <p>I would like to share with you how I did this in case it comes up in you own work. Along the way, I will show some neat tricks and explain why I take certain approaches e.g. multi-level indices, pivoting, stacking, list-comprehension, appply, lambda, string manipulation etc..Please note that I have sanitized the dataset and generated dummy numbers, but the 
@@ -1104,6 +1095,7 @@ memory usage: 1.6+ KB
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<img src= "moulding_data_pic.jpg">
 <p>Now, on to my favorite part - reshaping the data! This functionality gives you so much power when it comes to data.It's one that I use so often for data cleaning and manipulation given the populaarity of spreadsheets and survey-type data in my work. To me reshaping data literally feels like I am moulding the data like putty with my very hands :). So, we will use pivoting on strategic indices and then use stacking to achieve the shape we want. Currenntly the data is in a wide format, but we need to change it to long format so that we can easily transfer it to Excel where long formats lend themselves to quick pivot tables and dashboard creation very easily.</p>
 
 </div>
