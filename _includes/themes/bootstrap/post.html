@@ -10,15 +10,15 @@
     <div class="content">
       {{ content }}
     </div>
-
+    <br>
     {% unless page.categories == empty %}
-        {% assign categories_list = page.categories %}
-        {% include JB/categories_list %}
+         <span class="label label-info">{% assign categories_list = page.categories %}
+        {% include JB/categories_list %}</span>
     {% endunless %}
 
     {% unless page.tags == empty %}
-        {% assign tags_list = page.tags %}
-        {% include JB/tags_list %}
+         <span class="label label-info">{% assign tags_list = page.tags %}
+        {% include JB/tags_list %}</span>
     {% endunless %}
 
     <hr>
