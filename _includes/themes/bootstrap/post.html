@@ -20,6 +20,17 @@
     {% endunless %}
 
     {% unless page.tags == empty %}
+        {% assign tags_list = page.tags %}
+        {% include JB/tags_list %}
+    {% endunless %}
+
+    {% unless page.tags == empty %}
+      <i class="icon-tags"></i>
+        {% assign tags_list = page.tags %}
+        {% include JB/tags_list %}
+    {% endunless %}
+
+    {% unless page.tags == empty %}
       <ul class="tag_box inline">
         <li><i class="icon-tags"></i></li>
         {% assign tags_list = page.tags %}
