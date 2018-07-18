@@ -5,10 +5,10 @@ header: Posts By Tag
 group: navigation
 ---
 {% include JB/setup %}
-<div class="card" style="width: 80rem;">
+<div class="card" style="width: 100rem;">
   <!--<img class="card-img-top" src="..." alt="Card image cap">-->
   <div class="card-body">
-    <h3 class="card-title">Quick Access to categories</h3>
+    <h3 class="card-title">Categories</h3>
     <p class="card-text">
 
         {% assign tags_list = site.tags %}
@@ -16,7 +16,7 @@ group: navigation
 
     </p>
   </div>
-</div>
+</div><br>
 
 {% for tag in site.tags %}
   <span class="badge" id="{{ tag[0] }}-ref">{{ tag[0] }}</span>

@@ -1,11 +1,11 @@
 
-.navbar-header {
-  font-size: 1.6px;
+.navbar-brand {
+  font-size: 1.6rem;
 
 }
 
 .navbar-nav {
-    font-size: 1.25px
+    font-size: 1.25rem
 }
 /* Font size*/
 .html {
