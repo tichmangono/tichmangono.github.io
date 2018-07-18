@@ -37,6 +37,13 @@
           </button>
           <a class="navbar-brand" href="{{ HOME_PATH }}">{{ site.title }}</a>
         </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-left">
+          <ul class="nav navbar-nav font-size:20px">
+            {% assign pages_list = site.pages %}
+            {% assign group = 'navigation' %}
+            {% include JB/pages_list %}
+          </ul>
+        </div>
         <div class="nav navbar-nav navbar-left">
           <p class="text text-primary">
            <!-- Add font awesome icons -->
@@ -45,15 +52,8 @@
            <a href="https://towardsdatascience.com/@tichmangono" class="fa fa-medium"></a>
            </p>
         </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-left">
-          <ul class="nav navbar-nav font-size:20px">
-            {% assign pages_list = site.pages %}
-            {% assign group = 'navigation' %}
-            {% include JB/pages_list %}
-          </ul>
-        </div>
-        <div  class="nav navbar-nav navbar-center">
-         <h4 class="text-warning">Python | Data Science | Public Health</h4>
+        <div  class="nav navbar-nav navbar-right">
+         <h4 class="text-warning text-lefy">Python | Data Science | Public Health</h4>
       </div>
     </div>
 
