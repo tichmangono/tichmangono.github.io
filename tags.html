@@ -5,12 +5,18 @@ header: Posts By Tag
 group: navigation
 ---
 {% include JB/setup %}
-
-<ul class="tag_box inline">
-  {% assign tags_list = site.tags %}
-  {% include JB/tags_list %}
-</ul>
-
+<div class="card" style="width: 18rem;">
+  <!--<img class="card-img-top" src="..." alt="Card image cap">-->
+  <div class="card-body">
+    <h5 class="card-title">Quick Access to categories</h5>
+    <p class="card-text">
+      <ul class="tag_box inline">
+        {% assign tags_list = site.tags %}
+        {% include JB/tags_list %}
+      </ul>
+    </p>
+  </div>
+</div>
 
 {% for tag in site.tags %}
   <span class="badge" id="{{ tag[0] }}-ref">{{ tag[0] }}</span>
