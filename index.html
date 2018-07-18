@@ -8,7 +8,10 @@ tagline:
 <div class="container">
   <ul class="posts list-group list-group-flush">
     {% for post in site.posts %}
-      <li class="list-group-item"><h3><span class="" >{{ post.date | date_to_string }}</span></h3> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
+      <li class="list-group-item">
+        <h4>&raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></h4>
+          <span class="" ><em>{{ post.date | date_to_string }}</em></span>
+      </li>
     {% endfor %}
   </ul>
 </div>
