@@ -7,7 +7,7 @@ tags : [public-health,supply chain, capstone project, machine-learning,python]
 {% include JB/setup %}
 
 
-### **Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques.**
+### **Predicting Global Supply Chain Outcomes for Essential HIV Medicines using Machine Learning Techniques**
 
 This is an overview of my final original capstone project for Udacity Machine Learning Engineer Nanodegree program. It was my first end-to-end machine learning project. You can find the full project report, data, code and notebooks on <a href="https://github.com/tichmangono/capstone_project">this github repo</a>
 
