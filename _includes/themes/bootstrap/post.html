@@ -12,13 +12,13 @@
     </div>
     <br>
     {% unless page.categories == empty %}
-         <span class="label label-primary size:15px">{% assign categories_list = page.categories %}
-        {% include JB/categories_list %}</span>
+         &nbsp<span class="badge">&nbsp{% assign categories_list = page.categories %}&nbsp
+        {% include JB/categories_list %}&nbsp</span>&nbsp
     {% endunless %}
 
     {% unless page.tags == empty %}
-         <span class="label label-primary size:15px">{% assign tags_list = page.tags %}
-        {% include JB/tags_list %}</span> &nbsp
+         &nbsp<span class="badge">&nbsp{% assign tags_list = page.tags %}&nbsp
+        {% include JB/tags_list %}&nbsp</span> &nbsp
     {% endunless %}
 
     <hr>
