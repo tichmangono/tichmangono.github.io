@@ -1,12 +1,15 @@
 
 .navbar-header {
-  font-size: 25px;
+  font-size: 1.6px;
 
-} 
+}
 
+.navbar-nav {
+    font-size: 1.25px
+}
 /* Font size*/
 .html {
-    font-size: 16px;
+    font-size: 1.1rem;
 }
 
 
