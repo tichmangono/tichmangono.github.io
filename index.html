@@ -5,30 +5,10 @@ tagline:
 ---
 {% include JB/setup %}
 
-
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
+<div class="container">
   <ul class="posts list-group list-group-flush">
     {% for post in site.posts %}
       <li class="list-group-item"><span class="" >{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
-  <div class="card-body">
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
-</div>
-
-<div class="container">
-  <div class="jumbotron">
-      <ul class="posts list-group list-group-flush">
-        {% for post in site.posts %}
-          <li class="list-group-item"><span class="" >{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
-        {% endfor %}
-      </ul>
-  </div>
 </div>
